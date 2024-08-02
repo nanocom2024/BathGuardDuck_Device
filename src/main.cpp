@@ -1,19 +1,3 @@
-//=====================================================================
-//  Leafony Platform sample sketch
-//     Platform     : ESP32
-//     Processor    : ESP32-WROOM-32
-//     Application  : ESP32 Touch Sensor
-//
-//     Leaf configuration
-//       (1) AP02A ESP MCU
-//       (2) AX08A 29pin header
-//
-//    (c) 2021 LEAFONY SYSTEMS Co., Ltd
-//    Released under the MIT license
-//    https://opensource.org/licenses/MIT
-//
-//      Rev.00 2021/04/01  First release
-//=====================================================================
 #include <WiFi.h>
 #include <WiFiClient.h>
 #include <WiFiAP.h>
@@ -24,7 +8,7 @@ const char WIFI_SSID[] = "Leafony_ESP32-AP";
 const char WIFI_PASSWORD[] = "password";
 WiFiServer server(80);
 
-void setup(){ 
+void setup() { 
     SERIAL_BEGIN(115200);
     SERIAL_PRINTLN("Wi-Fi & Touch Sensor Test");
 
@@ -41,7 +25,7 @@ void setup(){
     SERIAL_PRINTLN("Server started");
 }
 
-void loop(){
+void loop() {
     int ret;
     int refreshTime = 1;                                // HTML page refresh time (sec)
     WiFiClient client = server.available();             // listen for incoming clients
@@ -81,3 +65,22 @@ void loop(){
         }
     }
 }
+
+
+
+//=====================================================================
+//  Leafony Platform sample sketch
+//     Platform     : ESP32
+//     Processor    : ESP32-WROOM-32
+//     Application  : ESP32 Touch Sensor
+//
+//     Leaf configuration
+//       (1) AP02A ESP MCU
+//       (2) AX08A 29pin header
+//
+//    (c) 2021 LEAFONY SYSTEMS Co., Ltd
+//    Released under the MIT license
+//    https://opensource.org/licenses/MIT
+//
+//      Rev.00 2021/04/01  First release
+//=====================================================================
