@@ -3,6 +3,7 @@
 #include <WiFiAP.h>
 #include "web_server.h"
 #include "esp32_ap_touch.h"
+#include <Adafruit_LIS3DH.h>
 
 static int printMsgIfTouched(WiFiClient client, uint16_t touchData, String htmlMsg) {
     uint16_t touchTemp;
@@ -99,7 +100,15 @@ static void connectHtml(WiFiClient client) {
     client.println();
 }
 
-void htmlTouchSensorMain(WiFiClient client, int update, uint32_t ip) {
+
+//加速度センサのデータを表示
+static void printAccelData(WiFiClient client, int update, String ipAddress, String accelStr) {
+    client.print("<p>");
+    client.print(accelStr);
+    client.print("</p>");
+}
+
+void htmlTouchSensorMain(WiFiClient client, int update, uint32_t ip, String accelStr) {
     String ipAddress = ipUintToString(ip);
 
     client.println("<html>");
@@ -107,6 +116,8 @@ void htmlTouchSensorMain(WiFiClient client, int update, uint32_t ip) {
     printHtmlHeader(client, update, ipAddress);
 
     printHtmlBody(client, update, ipAddress);
+
+    printAccelData(client, update, ipAddress, accelStr);
 
     client.println("</html>");
 }
