@@ -2,6 +2,7 @@
 #include <WiFiClient.h>
 #include <WiFiAP.h>
 #include <WiFiClientSecure.h>
+#include <list>
 #include "web_server.h"
 // #include "esp32_ap_touch.h"
 #include <Adafruit_LIS3DH.h>
@@ -16,9 +17,23 @@ const char* password = "bearspooh";
 const char* lineToken = ""; // ここにLine Notifyのトークンを入れる
 const char* server = "notify-api.line.me";
 
+//加速度の構造体
+struct Accel {
+    double x;
+    double y;
+    double z;
+};
+
+//直近の加速度のリスト
+std::list<Accel> recentAccelList;
+//リストの最大長
+const int MAX_RECENT_ACCEL = 100;
+
 //プロトタイプ宣言
 void sendLineNotify(String message);
+void printAccel(Accel accel);
 
+//初期設定
 void setup() { 
     Serial.begin(115200);
 
@@ -41,22 +56,64 @@ void setup() {
     delay(100);
 }
 
+
+
+//メインループ
 void loop() {
     /* 加速度センサの処理 */
     accel.read();
-    Serial.print("X [g] = " + String(accel.x_g));
-    Serial.print(", ");
-    Serial.print("Y [g] = " + String(accel.y_g));
-    Serial.print(", ");
-    Serial.print("Z [g] = " + String(accel.z_g));
-    Serial.println("");
-    delay(100);
+    //現在の加速度を取得
+    Accel nowAccel = {(double)accel.x, (double)accel.y, (double)accel.z};
+    // printAccel(nowAccel);
+    delay(10);
 
-    if (abs(accel.x_g) > 0.7 || abs(accel.y_g) > 0.7) {
-        sendLineNotify("めっちゃ揺れてる！！！！！！！！！！！！");
-        delay(10000);
+    //直近の加速度をリストに追加
+    recentAccelList.push_back(nowAccel);
+    //リストの長さが最大長を超えたら先頭の要素を削除
+    if (recentAccelList.size() > MAX_RECENT_ACCEL) {
+        recentAccelList.pop_front();
     }
+    //加速度リスト中の平均値を計算
+    Accel avgAccel = {0, 0, 0};
+    for (Accel accel : recentAccelList) {
+        avgAccel.x += accel.x;
+        avgAccel.y += accel.y;
+        avgAccel.z += accel.z;
+    }
+    avgAccel.x /= recentAccelList.size();
+    avgAccel.y /= recentAccelList.size();
+    avgAccel.z /= recentAccelList.size();
+
+    //表示
+    // printAccel(avgAccel);
+
+    //現在値と平均値の傾き
+    Accel slopeAccel = {nowAccel.x / avgAccel.x, nowAccel.y / avgAccel.y, nowAccel.z / avgAccel.z};
+    printAccel(slopeAccel);
+
+    //入水時の波による加速度の変化を検知
+    // if (abs(accel.x_g) > 0.7 || abs(accel.y_g) > 0.7) {
+    //     sendLineNotify("お子さんが浴槽に入水しています！！！！！");
+    //     delay(10000);
+    // }
 }
+
+
+//加速度を表示する関数
+void printAccel(Accel accel) {
+    Serial.print("X: " + String(accel.x));
+    Serial.print(", ");
+    Serial.print("Y: " + String(accel.y));
+    Serial.print(", ");
+    Serial.print("Z: " + String(accel.z));
+    Serial.println("");
+}
+
+
+
+
+
+
 
 // Line Notifyに通知を送る関数
 void sendLineNotify(String message) {
