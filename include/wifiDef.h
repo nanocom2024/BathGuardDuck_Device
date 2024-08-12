@@ -1,9 +1,9 @@
 const char* server = "notify-api.line.me";
 #include <WiFiClientSecure.h>
 
-const char* ssid = "ctc-g-b4e19a";
-const char* password = "393becfe5cc64";
-const char* lineToken = "M9j0iUaJA1T2uLuF91vC4YWqnjAjhetlRwdytDlv6Mj"; // ここにLine Notifyのトークンを入れる
+const char* ssid = "";
+const char* password = "";
+const char* lineToken = ""; // ここにLine Notifyのトークンを入れる
 const char* notifyMes = "めっちゃ揺れてる！！！！！！！！！！！！";
 
 //プロトタイプ宣言
