@@ -72,4 +72,9 @@ double getAccelStd(Accel avgAccel) {
     return sqrt(var);
 }
 
+//加速度リストをクリアする関数
+void clearAccelList() {
+    recentAccelList.clear();
+}
+
 

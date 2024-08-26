@@ -1,13 +1,14 @@
-const char* server = "notify-api.line.me";
+const char* server = "bath-guard-duck-web.vercel.app";
 #include <WiFiClientSecure.h>
 
 const char* ssid = "";
 const char* password = "";
-const char* lineToken = ""; // ここにLine Notifyのトークンを入れる
+// const char* lineToken = ""; // ここにLine Notifyのトークンを入れる
 const char* notifyMes = "めっちゃ揺れてる！！！！！！！！！！！！";
 
 //プロトタイプ宣言
-void sendLineNotify(String message);
+// void sendLineNotify(String message);
+void sendNotification();
 
 void wifiSetUp(const char* ssid, const char* password) {
     // WiFiの設定
