@@ -48,7 +48,7 @@ void sendNotification() { //String message
         return;
     }
 
-    String data = "{\"state\":\"ENTER_WATER\"}";  // 固定のJSONデータ
+    String data = "{\"state\":\"ENTER_WATER\", \"token\":\">>>SET TOKEN HERE<<<\"}";  // 固定のJSONデータ
 
     client.println("POST /api/v1/send-notification HTTP/1.1"); //HTTPリクエスト
     client.println("Host: " + String(server)); //Hostの設定
