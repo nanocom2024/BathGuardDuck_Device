@@ -4,4 +4,7 @@
 
 //加速度センサの値をWiFiでLINENotifyに送信するプログラム
 //本番はこっち
-#define SELECT_WIFI
+// #define SELECT_WIFI
+
+//初期設定用サーバを立ち上げる
+#define SELECT_SERVER
