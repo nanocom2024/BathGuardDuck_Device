@@ -33,13 +33,14 @@ void loop() {
 
     //標準偏差が5以上の場合はLine Notifyで通知
     if (intStd >= 5) {
-        sendLineNotify(notifyMes);
+        sendNotification();
+        clearAccelList();
         delay(10000);
     }
 }
 
-// Line Notifyに通知を送る関数
-void sendLineNotify(String message) {
+//POSTする関数
+void sendNotification() { //String message
     WiFiClientSecure client;
     client.setInsecure(); //証明書無視??????????
     if (!client.connect(server, 443)) {
@@ -47,16 +48,39 @@ void sendLineNotify(String message) {
         return;
     }
 
-    String data = "message=" + message;
-    client.println("POST /api/notify HTTP/1.1");
-    client.println("Host: notify-api.line.me");
-    client.println("Authorization: Bearer " + String(lineToken));
-    client.println("Content-Type: application/x-www-form-urlencoded");
+    String data = "{\"state\":\"ENTER_WATER\", \"token\":\">>>SET TOKEN HERE<<<\"}";  // 固定のJSONデータ
+
+    client.println("POST /api/v1/send-notification HTTP/1.1"); //HTTPリクエスト
+    client.println("Host: " + String(server)); //Hostの設定
+    client.println("Content-Type: application/json"); // JSON形式のContent-Type
     client.print("Content-Length: ");
     client.println(data.length());
-    client.println();
-    client.println(data);
+    client.println(); //ヘッダ終了
+    client.println(data); //メッセージ本体
 
-    Serial.println("Notification sent: " + message);
+    Serial.println("Notification sent: " + data);
 }
+
+
+// Line Notifyに通知を送る関数
+// void sendLineNotify(String message) {
+//     WiFiClientSecure client;
+//     client.setInsecure(); //証明書無視??????????
+//     if (!client.connect(server, 443)) {
+//         Serial.println("Connection failed");
+//         return;
+//     }
+
+//     String data = "message=" + message;
+//     client.println("POST /api/notify HTTP/1.1"); //HTTPリクエスト
+//     client.println("Host: notify-api.line.me"); //Hostの設定
+//     client.println("Authorization: Bearer " + String(lineToken));
+//     client.println("Content-Type: application/x-www-form-urlencoded");
+//     client.print("Content-Length: ");
+//     client.println(data.length());
+//     client.println(); //ヘッダ終了
+//     client.println(data); //メッセージ本体
+
+//     Serial.println("Notification sent: " + message);
+// }
 #endif
