@@ -78,44 +78,86 @@ void loop() {
     Accel slopeAccel = {nowAccel.x / avgAccel.x, nowAccel.y / avgAccel.y, nowAccel.z / avgAccel.z};
     String accelStr = getAccelStr(slopeAccel);
     // Serial.println(accelStr);
-    printAccel(slopeAccel);
+    // printAccel(slopeAccel);
 
     int ret;
-    int refreshTime = 1;                                // HTML page refresh time (sec)
-    WiFiClient client = server.available();             // listen for incoming clients
+    int refreshTime = 0;                                // HTML page refresh time (sec)
+    WiFiClient client = server.available();              // 受信クライアントをリッスンする
 
-    if (client) {                                       // if you get a client
-        String currentLine = "";                        // make a String to hold incoming data from the client
-        while (client.connected()) {                    // loop while the client's connected
-            if (client.available()) {                   // if there's bytes to read from the client
-                char byteData = client.read();          // read a byte, then
-                if (byteData == '\n') {                 // if the byte is newline character
-                    // if the current line is blank, you got two newline characters in a row.
-                    // That's the end of the client HTTP request, so send a response:
+    if (client) {                                       // クライアントを獲得したら
+        String currentLine = "";                        // クライアントからの受信データを格納する変数を作成する
+        while (client.connected()) {                    // クライアントが接続している間ループする
+            if (client.available()) {                   // クライアントから読み込むバイトがある場合
+                char byteData = client.read();          // バイトを読み取り
+                if (byteData == '\n') {                 // バイトが改行の場合
+                    // 現在の行が空白なら、改行文字が2つ並んでいることになるので、
+                    // これでクライアントのHTTPリクエストは終了となり、レスポンスを送信する
                     if (currentLine.length() == 0) {
-                        htmlTouchSensorMain(            // send html contents
+                        htmlTouchSensorMain(            // htmlコンテンツを送信する
                             client,
                             refreshTime,
                             WiFi.softAPIP(),
-                            accelStr
-                            );
-                        break;                          // break out of the while loop:
-                    } else {                            // if you got a newline
-                        // check if the data from client contains "GET /?INT="
-                        ret = currentLine.indexOf("GET /?INT=");
-                        if (ret > -1) {     // if found,
-                            // extract the number corresponding to required page refresh period from currentLine
-                            // and cast it to String, and cast it again to int.
-                            // Then, assign to refreshTime
+                            accelStr,
+                            false
+                        );
+                        break;                          // whileループから抜け出す
+                    } else {                            // 改行があれば
+                        // クライアントからのデータに 「GET /?INT=」が含まれているかチェックする
+                        ret = currentLine.indexOf("GET /?INT="); ///?INT=はURLのパラメータ?
+                        if (ret > -1) {     // もし見つかれば
+                            // currentLineから必要なページ更新期間に対応する数値を取り出し、
+                            // それをStringにキャストし、再びintにキャストする。
+                            // 次に、refreshTimeに代入する。
                             refreshTime = String(currentLine.charAt(ret + 10)).toInt();
                             Serial.print("refresh time updated :");
                             Serial.print(refreshTime);
                             Serial.println("s");
                         }
-                        currentLine = "";   // clear the current Line to store new incoming data.
+
+                        //POSTがあるかチェック
+                        String userid = "";
+                        String ssid = "";
+                        String password = "";
+                        Serial.println("nu: " + currentLine);
+                        ret = currentLine.indexOf("POST"); //userid=nu&ssid=nu&password=nu
+                        if (ret > -1) {
+                            Serial.println("POST request");
+                            //bodyのデータを読み込む
+                            String allBody = "";
+                            while (client.available()) {
+                                byteData = client.read();
+                                allBody += String(byteData);
+                            }
+
+                            //allBodyからuserid、ssid、passwordを取り出す
+                            int index = allBody.indexOf("userid=");
+                            if (index > -1) {
+                                userid = allBody.substring(index + 7, allBody.indexOf("&", index));
+                            }
+                            index = allBody.indexOf("ssid=");
+                            if (index > -1) {
+                                ssid = allBody.substring(index + 5, allBody.indexOf("&", index));
+                            }
+                            index = allBody.indexOf("password=");
+                            if (index > -1) {
+                                //最後の文字まで取り出す
+                                password = allBody.substring(index + 9, allBody.length());
+                            }
+                            Serial.println("userid: " + userid);
+                            Serial.println("ssid: " + ssid);
+                            Serial.println("password: " + password);
+                            htmlTouchSensorMain(            // htmlコンテンツを送信する
+                                client,
+                                refreshTime,
+                                WiFi.softAPIP(),
+                                accelStr,
+                                true
+                            );
+                        }
+                        currentLine = "";   // 新しい受信データを保存するために、現在のLineをクリアする。
                     }
-                } else if (byteData != '\r') {          // if you got anything else but a carriage return character,
-                    currentLine += String(byteData);    // add it to the end of the currentLine
+                } else if (byteData != '\r') {          // \r以外の文字があれば、
+                    currentLine += String(byteData);    // それをカレント行の最後に追加する
                 }
             }
         }

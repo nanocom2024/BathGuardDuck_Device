@@ -73,9 +73,18 @@ static int printHtmlBody(WiFiClient client, int update, String ipAddress) {
     client.println("<hr>");
     client.print("<p>http://");
     client.print(ipAddress);
-    client.println("<form method=\"GET\" action=\"http://" + ipAddress + "/\">");
-    client.println("automatic update:<input type=\"submit\" name=\"INT\" value=\"0 Stop\">");
-    client.println("<input type=\"submit\" name=\"INT\" value=\"1 second\">");
+    client.println("<form method=\"POST\" action=\"http://" + ipAddress + "/\">");
+    
+    client.println("<p>ユーザID：<br>");
+    client.println("<input type=\"text\" name=\"userid\"></p>");
+    client.println("<p>SSID：<br>");
+    client.println("<input type=\"text\" name=\"ssid\"></p>");
+    client.println("<p>PASSWORD：<br>");
+    client.println("<input type=\"text\" name=\"password\"></p>");
+    client.println("<button type=\"submit\">設定</button>");
+    // client.println("automatic update:<input type=\"submit\" name=\"INT\" value=\"0 Stop\">");
+    // client.println("<input type=\"submit\" name=\"INT\" value=\"1 second\">");
+
     client.println("</form>");
     client.println("</body>");
     return 0;
@@ -107,7 +116,13 @@ static void printAccelData(WiFiClient client, int update, String ipAddress, Stri
     client.print("</p>");
 }
 
-void htmlTouchSensorMain(WiFiClient client, int update, uint32_t ip, String accelStr) {
+static void dispComplete(WiFiClient client) {
+    client.print("<p>");
+    client.print("設定が完了しました。");
+    client.print("</p>");
+}
+
+void htmlTouchSensorMain(WiFiClient client, int update, uint32_t ip, String accelStr, bool isSetup) {
     String ipAddress = ipUintToString(ip);
 
     client.println("<html>");
@@ -119,4 +134,8 @@ void htmlTouchSensorMain(WiFiClient client, int update, uint32_t ip, String acce
     printAccelData(client, update, ipAddress, accelStr);
 
     client.println("</html>");
+
+    if (isSetup) {
+        dispComplete(client);
+    }
 }
