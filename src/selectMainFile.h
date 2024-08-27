@@ -7,4 +7,5 @@
 // #define SELECT_WIFI
 
 //初期設定用サーバを立ち上げる
+// http://192.168.4.1
 #define SELECT_SERVER

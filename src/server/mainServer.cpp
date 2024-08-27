@@ -4,7 +4,7 @@
 #include <WiFi.h>
 #include <WiFiClient.h>
 #include <WiFiAP.h>
-#include "web_server.h"
+#include "webServer.h"
 #include <Adafruit_LIS3DH.h>
 
 const char WIFI_SSID[] = "Leafony_ESP32-AP";
@@ -32,14 +32,14 @@ void printAccel(Accel accel);
 
 void setup() {
     /* wifi設定 */
-    SERIAL_BEGIN(115200);
-    SERIAL_PRINTLN("Wi-Fi & Touch Sensor Test");
+    Serial.begin(115200);
+    Serial.println("Wi-Fi & Touch Sensor Test");
     WiFi.softAP(WIFI_SSID, WIFI_PASSWORD);
     IPAddress myIP = WiFi.softAPIP();
-    SERIAL_PRINT("AP IP address: ");
-    SERIAL_PRINTLN(myIP);
+    Serial.print("AP IP address: ");
+    Serial.println(myIP);
     server.begin();
-    SERIAL_PRINTLN("Server started");
+    Serial.println("Server started");
 
     /* 加速度センサの設定 */
     accel.begin(LIS3DH_ADDRESS);
@@ -79,8 +79,6 @@ void loop() {
     String accelStr = getAccelStr(slopeAccel);
     // Serial.println(accelStr);
     printAccel(slopeAccel);
-
-    
 
     int ret;
     int refreshTime = 1;                                // HTML page refresh time (sec)
