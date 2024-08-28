@@ -31,9 +31,15 @@ void loop() {
   //分散と標準偏差計算
   double std = getAccelStd(avgAccel);
 
-  //stdをBluetoothで送信
-  SerialBT.print(">avg:");
+  //Bluetoothで送信
+  SerialBT.print(nowAccel.x);
+  SerialBT.print(',');
+  SerialBT.print(nowAccel.y);
+  SerialBT.print(',');
+  SerialBT.print(nowAccel.z);
+  SerialBT.print(',');
   SerialBT.println(std);
+  
   // Serial.print(">avg:");
   // Serial.println(std);
 
