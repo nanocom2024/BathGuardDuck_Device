@@ -3,28 +3,20 @@ const char* server = "bath-guard-duck-web.vercel.app";
 #include "../include/webServer.h"
 WiFiServer localServer(80);
 
-const char* ssid = "";
-const char* password = "";
-const char* notifyMes = "めっちゃ揺れてる！！！！！！！！！！！！";
-
 const char LOCAL_WIFI_SSID[] = "Leafony_ESP32-AP";
 const char LOCAL_WIFI_PASSWORD[] = "password";
+
+//設定用変数
+String savedUserid = "";
+String savedSsid = "";
+String savedPassword = "";
 
 //プロトタイプ宣言
 // void sendLineNotify(String message);
 void sendNotification();
 
 //初期設定
-void wifiServerSetUp() {
-    // WiFiの設定
-    WiFi.begin(ssid, password);
-    Serial.print("Connecting to WiFi...");
-    while (WiFi.status() != WL_CONNECTED) {
-        delay(1000);
-        Serial.print(".");
-    }
-    Serial.println("Connected to WiFi");
-
+void localServerSetUp() {
     // サーバの設定
     WiFi.softAP(LOCAL_WIFI_SSID, LOCAL_WIFI_PASSWORD);
     IPAddress myIP = WiFi.softAPIP();
@@ -34,14 +26,16 @@ void wifiServerSetUp() {
     Serial.println("Server started");
 }
 
-/* wifi設定 */
-// WiFi.softAP(WIFI_SSID, WIFI_PASSWORD);
-// IPAddress myIP = WiFi.softAPIP();
-// Serial.print("AP IP address: ");
-// Serial.println(myIP);
-// server.begin();
-// Serial.println("Server started");
-
+void wifiSetUp() {
+    // WiFiの設定
+    WiFi.begin(savedSsid, savedPassword);
+    Serial.print("Connecting to WiFi...");
+    while (WiFi.status() != WL_CONNECTED) {
+        delay(1000);
+        Serial.print(".");
+    }
+    Serial.println("Connected to WiFi");
+}
 
 //サーバを立ち上げる関数
 bool runningServer() {
@@ -80,9 +74,6 @@ bool runningServer() {
                         }
 
                         //POSTがあるかチェック
-                        String userid = "";
-                        String ssid = "";
-                        String password = "";
                         Serial.println("nu: " + currentLine);
                         ret = currentLine.indexOf("POST"); //userid=nu&ssid=nu&password=nu
                         if (ret > -1) {
@@ -97,22 +88,22 @@ bool runningServer() {
                             //allBodyからuserid、ssid、passwordを取り出す
                             int index = allBody.indexOf("userid=");
                             if (index > -1) {
-                                userid = allBody.substring(index + 7, allBody.indexOf("&", index));
+                                savedUserid = allBody.substring(index + 7, allBody.indexOf("&", index));
                             }
                             index = allBody.indexOf("ssid=");
                             if (index > -1) {
-                                ssid = allBody.substring(index + 5, allBody.indexOf("&", index));
+                                savedSsid = allBody.substring(index + 5, allBody.indexOf("&", index));
                             }
                             index = allBody.indexOf("password=");
                             if (index > -1) {
                                 //最後の文字まで取り出す
-                                password = allBody.substring(index + 9, allBody.length());
+                                savedPassword = allBody.substring(index + 9, allBody.length());
                             }
 
                             //設定完了
-                            Serial.println("userid: " + userid);
-                            Serial.println("ssid: " + ssid);
-                            Serial.println("password: " + password);
+                            Serial.println("userid: " + savedUserid);
+                            Serial.println("ssid: " + savedSsid);
+                            Serial.println("password: " + savedPassword);
                             isSetup = true;
 
                             //表示する

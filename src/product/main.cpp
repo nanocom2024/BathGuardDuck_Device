@@ -10,16 +10,18 @@ const char WIFI_PASSWORD[] = "password";
 void setup() { 
     Serial.begin(115200);
 
-    /* WIFIの設定 */
-    wifiServerSetUp();
+    /* ローカルサーバの設定 */
+    localServerSetUp();
 
     /* 加速度センサの設定 */
     accelSetUp();
     delay(100);
 }
 
+//初期設定用フラグ
+bool isSetup = false; //ローカルサーバからの設定が完了したか
+bool isConnectedToWifi = false; //WiFiに接続したか
 
-bool isSetup = false;
 void loop() {
     /* 設定用サーバの立ち上げ */
     if (!isSetup) {
@@ -27,7 +29,8 @@ void loop() {
         return;
     }
 
-    Serial.println("hogehogehogehogehoge");
+    /* 受け取った設定のWiFiに接続 */
+    wifiSetUp();
 
     /* 加速度センサの処理 */
     //現在の加速度を取得
