@@ -13,7 +13,7 @@ String savedPassword = "";
 
 //プロトタイプ宣言
 // void sendLineNotify(String message);
-void sendNotification();
+// void sendNotification();
 
 //初期設定
 void localServerSetUp() {
@@ -35,6 +35,11 @@ void wifiSetUp() {
         Serial.print(".");
     }
     Serial.println("Connected to WiFi");
+}
+
+//userIDを取得する関数
+String getUserid() {
+    return savedUserid;
 }
 
 //サーバを立ち上げる関数
@@ -124,4 +129,26 @@ bool runningServer() {
         }
     }
     return isSetup;
+}
+
+//POSTする関数
+void sendNotification() { //String message
+    WiFiClientSecure client;
+    client.setInsecure(); //証明書無視??????????
+    if (!client.connect(server, 443)) {
+        Serial.println("Connection failed");
+        return;
+    }
+
+    //POSTするjsonデータ
+    String data = "{\"state\":\"ENTER_WATER\", \"token\":\">>>SET TOKEN HERE<<<\", \"userid\":\"" + savedUserid + "\"}"; 
+    client.println("POST /api/v1/send-notification HTTP/1.1"); //HTTPリクエスト
+    client.println("Host: " + String(server)); //Hostの設定
+    client.println("Content-Type: application/json"); // JSON形式のContent-Type
+    client.print("Content-Length: ");
+    client.println(data.length());
+    client.println(); //ヘッダ終了
+    client.println(data); //メッセージ本体
+
+    Serial.println("Notification sent: " + data);
 }

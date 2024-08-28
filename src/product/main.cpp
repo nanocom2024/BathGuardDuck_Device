@@ -3,10 +3,6 @@
 #include "accelDef.h"
 #include "wifiServerDef.h"
 
-const char WIFI_SSID[] = "Leafony_ESP32-AP";
-const char WIFI_PASSWORD[] = "password";
-
-
 void setup() { 
     Serial.begin(115200);
 
@@ -57,26 +53,24 @@ void loop() {
 }
 
 //POSTする関数
-void sendNotification() { //String message
-    WiFiClientSecure client;
-    client.setInsecure(); //証明書無視??????????
-    if (!client.connect(server, 443)) {
-        Serial.println("Connection failed");
-        return;
-    }
+// void sendNotification() { //String message
+//     WiFiClientSecure client;
+//     client.setInsecure(); //証明書無視??????????
+//     if (!client.connect(server, 443)) {
+//         Serial.println("Connection failed");
+//         return;
+//     }
 
-    String data = "{\"state\":\"ENTER_WATER\", \"token\":\">>>SET TOKEN HERE<<<\"}";  // 固定のJSONデータ
-    client.println("POST /api/v1/send-notification HTTP/1.1"); //HTTPリクエスト
-    client.println("Host: " + String(server)); //Hostの設定
-    client.println("Content-Type: application/json"); // JSON形式のContent-Type
-    client.print("Content-Length: ");
-    client.println(data.length());
-    client.println(); //ヘッダ終了
-    client.println(data); //メッセージ本体
+//     String data = "{\"state\":\"ENTER_WATER\", \"token\":\">>>SET TOKEN HERE<<<\"}";  // 固定のJSONデータ
+//     client.println("POST /api/v1/send-notification HTTP/1.1"); //HTTPリクエスト
+//     client.println("Host: " + String(server)); //Hostの設定
+//     client.println("Content-Type: application/json"); // JSON形式のContent-Type
+//     client.print("Content-Length: ");
+//     client.println(data.length());
+//     client.println(); //ヘッダ終了
+//     client.println(data); //メッセージ本体
 
-    Serial.println("Notification sent: " + data);
-}
-
-
+//     Serial.println("Notification sent: " + data);
+// }
 
 #endif
