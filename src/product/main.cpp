@@ -3,15 +3,16 @@
 #include "accelDef.h"
 #include "wifiServerDef.h"
 
+
 void setup() { 
     Serial.begin(115200);
 
     /* WIFIの設定 */
-    wifiServerSetUp(ssid, password);
+    wifiServerSetUp();
 
     /* 加速度センサの設定 */
     accelSetUp();
-    delay(100);
+    delay(10000);
 }
 
 
@@ -19,6 +20,8 @@ bool isSetup = false;
 void loop() {
     /* 設定用サーバの立ち上げ */
     isSetup = runningServer();
+
+    Serial.println("loop");
 
     if (!isSetup) return;
 

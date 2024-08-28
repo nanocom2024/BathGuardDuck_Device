@@ -7,12 +7,15 @@ const char* ssid = "";
 const char* password = "";
 const char* notifyMes = "めっちゃ揺れてる！！！！！！！！！！！！";
 
+const char LOCAL_WIFI_SSID[] = "Leafony_ESP32-AP";
+const char LOCAL_WIFI_PASSWORD[] = "password";
+
 //プロトタイプ宣言
 // void sendLineNotify(String message);
 void sendNotification();
 
 //初期設定
-void wifiServerSetUp(const char* ssid, const char* password) {
+void wifiServerSetUp() {
     // WiFiの設定
     WiFi.begin(ssid, password);
     Serial.print("Connecting to WiFi...");
@@ -23,12 +26,22 @@ void wifiServerSetUp(const char* ssid, const char* password) {
     Serial.println("Connected to WiFi");
 
     // サーバの設定
+    WiFi.softAP(LOCAL_WIFI_SSID, LOCAL_WIFI_PASSWORD);
     IPAddress myIP = WiFi.softAPIP();
     Serial.print("AP IP address: ");
     Serial.println(myIP);
     localServer.begin();
     Serial.println("Server started");
 }
+
+/* wifi設定 */
+// WiFi.softAP(WIFI_SSID, WIFI_PASSWORD);
+// IPAddress myIP = WiFi.softAPIP();
+// Serial.print("AP IP address: ");
+// Serial.println(myIP);
+// server.begin();
+// Serial.println("Server started");
+
 
 //サーバを立ち上げる関数
 bool runningServer() {
