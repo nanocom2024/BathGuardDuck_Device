@@ -3,6 +3,9 @@
 #include "accelDef.h"
 #include "wifiServerDef.h"
 
+const char WIFI_SSID[] = "Leafony_ESP32-AP";
+const char WIFI_PASSWORD[] = "password";
+
 
 void setup() { 
     Serial.begin(115200);
@@ -12,18 +15,17 @@ void setup() {
 
     /* 加速度センサの設定 */
     accelSetUp();
-    delay(10000);
+    delay(100);
 }
 
 
 bool isSetup = false;
 void loop() {
     /* 設定用サーバの立ち上げ */
-    isSetup = runningServer();
-
-    Serial.println("loop");
-
-    if (!isSetup) return;
+    if (!isSetup) {
+        isSetup = runningServer();
+        return;
+    }
 
     /* 加速度センサの処理 */
     //現在の加速度を取得
