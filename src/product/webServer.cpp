@@ -1,5 +1,5 @@
 #include "selectMainFile.h"
-#ifdef SELECT_SERVER
+#ifdef SELECT_PRODUCT
 #include <WiFi.h>
 #include <WiFiClient.h>
 #include <WiFiAP.h>
@@ -110,21 +110,13 @@ static void connectHtml(WiFiClient client) {
     client.println();
 }
 
-
-//加速度センサのデータを表示
-static void printAccelData(WiFiClient client, int update, String ipAddress, String accelStr) {
-    client.print("<p>");
-    client.print(accelStr);
-    client.print("</p>");
-}
-
 static void dispComplete(WiFiClient client) {
     client.print("<p>");
     client.print("設定が完了しました。");
     client.print("</p>");
 }
 
-void htmlTouchSensorMain(WiFiClient client, int update, uint32_t ip, String accelStr, bool isSetup) {
+void htmlTouchSensorMain(WiFiClient client, int update, uint32_t ip, bool isSetup) {
     String ipAddress = ipUintToString(ip);
 
     client.println("<html>");
@@ -132,8 +124,6 @@ void htmlTouchSensorMain(WiFiClient client, int update, uint32_t ip, String acce
     printHtmlHeader(client, update, ipAddress);
 
     printHtmlBody(client, update, ipAddress);
-
-    printAccelData(client, update, ipAddress, accelStr);
 
     client.println("</html>");
 

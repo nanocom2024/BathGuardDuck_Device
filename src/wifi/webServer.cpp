@@ -1,5 +1,5 @@
 #include "selectMainFile.h"
-#ifdef SELECT_SERVER
+#ifdef SELECT_WIFI
 #include <WiFi.h>
 #include <WiFiClient.h>
 #include <WiFiAP.h>
