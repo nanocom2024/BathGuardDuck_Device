@@ -27,6 +27,8 @@ void loop() {
         return;
     }
 
+    Serial.println("hogehogehogehogehoge");
+
     /* 加速度センサの処理 */
     //現在の加速度を取得
     Accel nowAccel = getNowAccel();

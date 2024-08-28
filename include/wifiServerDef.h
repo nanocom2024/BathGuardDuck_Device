@@ -122,6 +122,7 @@ bool runningServer() {
                                 WiFi.softAPIP(),
                                 isSetup
                             );
+                            break; //設定が完了したのでループを抜ける
                         }
                         currentLine = "";   // 新しい受信データを保存するために、現在のLineをクリアする。
                     }
