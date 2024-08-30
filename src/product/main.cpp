@@ -26,7 +26,10 @@ void loop() {
     }
 
     /* 受け取った設定のWiFiに接続 */
-    wifiSetUp();
+    if (!isConnectedToWifi) {
+        wifiSetUp();
+        isConnectedToWifi = true;
+    }
 
     /* 加速度センサの処理 */
     //現在の加速度を取得
