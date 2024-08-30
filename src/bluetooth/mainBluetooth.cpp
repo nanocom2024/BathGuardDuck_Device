@@ -30,6 +30,8 @@ void loop() {
 
   //分散と標準偏差計算
   double std = getAccelStd(avgAccel);
+  double stdX = getAccelStdX(avgAccel);
+  double stdY = getAccelStdY(avgAccel);
   double stdZ = getAccelStdZ(avgAccel);
 
   //Bluetoothで送信
@@ -39,7 +41,11 @@ void loop() {
   SerialBT.print(',');
   SerialBT.print(nowAccel.z);
   SerialBT.print(',');
-  SerialBT.println(std);
+  SerialBT.print(std);
+  SerialBT.print(',');
+  SerialBT.print(stdX);
+  SerialBT.print(',');
+  SerialBT.print(stdY);
   SerialBT.print(',');
   SerialBT.println(stdZ);
   
