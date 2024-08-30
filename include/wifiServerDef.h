@@ -141,7 +141,7 @@ void sendNotification() { //String message
     }
 
     //POSTするjsonデータ
-    String data = "{\"state\":\"ENTER_WATER\", \"token\":\">>>SET TOKEN HERE<<<\", \"userid\":\"" + savedUserid + "\"}"; 
+    String data = "{\"state\":\"ENTER_WATER\", \"token\":\">>>SET TOKEN HERE<<<\", \"email\":\"" + savedUserid + "\"}"; 
     client.println("POST /api/v1/send-notification HTTP/1.1"); //HTTPリクエスト
     client.println("Host: " + String(server)); //Hostの設定
     client.println("Content-Type: application/json"); // JSON形式のContent-Type
