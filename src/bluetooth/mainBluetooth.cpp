@@ -42,25 +42,25 @@ void loop() {
   double stdZ = getAccelStdZ(avgAccel);
 
   //Bluetoothで送信
-  // SerialBT.print(nowAccel.x);
-  // SerialBT.print(',');
-  // SerialBT.print(nowAccel.y);
-  // SerialBT.print(',');
-  // SerialBT.print(nowAccel.z);
-  // SerialBT.print(',');
-  // SerialBT.print(std);
-  // SerialBT.print(',');
-  // SerialBT.print(stdX);
-  // SerialBT.print(',');
-  // SerialBT.print(stdY);
-  // SerialBT.print(',');
-  // SerialBT.println(stdZ);
+  SerialBT.print(nowAccel.x);
+  SerialBT.print(',');
+  SerialBT.print(nowAccel.y);
+  SerialBT.print(',');
+  SerialBT.print(nowAccel.z);
+  SerialBT.print(',');
+  SerialBT.print(std);
+  SerialBT.print(',');
+  SerialBT.print(stdX);
+  SerialBT.print(',');
+  SerialBT.print(stdY);
+  SerialBT.print(',');
+  SerialBT.println(stdZ);
   
-  // Serial.print(">avg:");
-  // Serial.println(std);
+  Serial.print(">avg:");
+  Serial.println(std);
 
 // 水上に浮いているかどうかの判定
-    if (nowAccel.z > 15000) {
+    if (nowAccel.z > 12500) {
         if (!isAbove15000) {
             // 初めて15000を超えたら時間を記録
             startTimeAbove = millis();
@@ -71,7 +71,7 @@ void loop() {
             // 必要な処理をここに記述
         }
     } else {
-        // 15000を下回ったらリセット
+        // 12500を下回ったらリセット
         isAbove15000 = false;
     }
 
