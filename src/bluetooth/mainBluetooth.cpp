@@ -17,11 +17,12 @@ void setup() {
 }
 
 // 変数をグローバルに宣言
-unsigned long startTimeAbove = 0; // 15000を超えた時間の計測
-unsigned long startTimeBelow = 0; // 12500を下回った時間の計測
-bool isAbove15000 = false; // zが15000を超えているかどうか
-bool isBelow12500 = false; // zが12500を下回っているかどうか
+unsigned long startTimeAbove = 0; // 閾値超えた時間の計測
+unsigned long startTimeBelow = 0; // 閾値を下回った時間の計測
+bool isAbove = false; // zが閾値を超えているかどうか
+bool isBelow = false; // zが閾値を下回っているかどうか
 
+int angle = 14000; // 水上に浮いているかどうかの閾値
 
 void loop() {
   /* 加速度センサの処理 */
@@ -59,37 +60,37 @@ void loop() {
   Serial.print(">avg:");
   Serial.println(std);
 
-// 水上に浮いているかどうかの判定
-    if (nowAccel.z > 12500) {
-        if (!isAbove15000) {
-            // 初めて15000を超えたら時間を記録
-            startTimeAbove = millis();
-            isAbove15000 = true;
-        } else if (millis() - startTimeAbove >= 3000) {
-            // 15000を超え続けて2分が経過したら「水上に浮いている」と判定
-            SerialBT.println("水上に浮いている");
-            // 必要な処理をここに記述
-        }
-    } else {
-        // 12500を下回ったらリセット
-        isAbove15000 = false;
-    }
+// // 水上に浮いているかどうかの判定
+//     if (nowAccel.z >= angle) {
+//         if (!isAbove) {
+//             // 初めて閾値を超えたら時間を記録
+//             startTimeAbove = millis();
+//             isAbove = true;
+//         } else if (millis() - startTimeAbove >= 3000) {
+//             // 閾値を超え続けて2分が経過したら「水上に浮いている」と判定
+//             SerialBT.println("水上に浮いている");
+//             // 必要な処理をここに記述
+//         }
+//     } else {
+//         // 閾値を下回ったらリセット
+//         isAbove = false;
+//     }
 
-    // 陸上に設置されているかどうかの判定
-    if (nowAccel.z < 12500) {
-        if (!isBelow12500) {
-            // 初めて12500を下回ったら時間を記録
-            startTimeBelow = millis();
-            isBelow12500 = true;
-        } else if (millis() - startTimeBelow >= 3000) {
-            // 12500を下回り続けて2分が経過したら「陸上に設置されている」と判定
-            SerialBT.println("陸上に設置されている");
-            // 必要な処理をここに記述
-        }
-    } else {
-        // 12500を超えたらリセット
-        isBelow12500 = false;
-    }
+//     // 陸上に設置されているかどうかの判定
+//     if (nowAccel.z < angle) {
+//         if (!isBelow) {
+//             // 初めて閾値を下回ったら時間を記録
+//             startTimeBelow = millis();
+//             isBelow = true;
+//         } else if (millis() - startTimeBelow >= 3000) {
+//             // 閾値を下回り続けて2分が経過したら「陸上に設置されている」と判定
+//             SerialBT.println("陸上に設置されている");
+//             // 必要な処理をここに記述
+//         }
+//     } else {
+//         // 閾値を超えたらリセット
+//         isBelow = false;
+//     }
 
   //遅延
   delay(20);
