@@ -7,5 +7,13 @@
 #define SELECT_Bluetooth
 
 //加速度センサの値をWiFiでLINENotifyに送信するプログラム
-//本番はこっち
 // #define SELECT_WIFI
+
+//初期設定用サーバを立ち上げる
+// http://192.168.4.1
+// #define SELECT_SERVER
+
+//本番用のプログラム
+//http://192.168.4.1
+#define SELECT_PRODUCT
+

@@ -10,13 +10,14 @@ const char* notifyMes = "めっちゃ揺れてる！！！！！！！！！！�
 //  void sendLineNotify(String message);
 void sendNotification();
 
-void wifiSetUp(const char* ssid, const char* password) {
-  // WiFiの設定
-  WiFi.begin(ssid, password);
-  Serial.print("Connecting to WiFi...");
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(1000);
-    Serial.print(".");
-  }
-  Serial.println("Connected to WiFi");
+
+void wifiServerSetUp(const char* ssid, const char* password) {
+    // WiFiの設定
+    WiFi.begin(ssid, password);
+    Serial.print("Connecting to WiFi...");
+    while (WiFi.status() != WL_CONNECTED) {
+        delay(1000);
+        Serial.print(".");
+    }
+    Serial.println("Connected to WiFi");
 }
