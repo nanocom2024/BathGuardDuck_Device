@@ -42,52 +42,19 @@ static int printHtmlBody(WiFiClient client, int update, String ipAddress) {
     uint16_t touchData;
 
     client.println("<body>");
-    client.println("<h3>Wi-Fi & Touch Sensor Test</h3>");
+    client.println("<h3>環境設定</h3>");
 
-    touchData = touchRead(T6);
-    if (printMsgIfTouched(client, touchData, "F7/D6") == 0) {
-        Serial.println("T6/D6/ 7pin :" + String(touchData) + " :Touch detected");
-    }
-
-    touchData = touchRead(T3);
-    if (printMsgIfTouched(client, touchData, "F9/D7") == 0) {
-        Serial.println("T3/D7/ 9pin :" + String(touchData) + " :Touch detected");
-    }
-
-    touchData = touchRead(T0);
-    if (printMsgIfTouched(client, touchData, "F22/D2") == 0) {
-        Serial.println("T0/D2/22pin :" + String(touchData) + " :Touch detected");
-    }
-
-    touchData = touchRead(T5);
-    if (printMsgIfTouched(client, touchData, "F26/D4") == 0) {
-        Serial.println("T5/D4/26pin :" + String(touchData) + " :Touch detected");
-    }
-
-    touchData = touchRead(T4);
-    if (printMsgIfTouched(client, touchData, "F28/D5") == 0) {
-        Serial.println("T4/D5/28pin :" + String(touchData) + " :Touch detected");
-    }
-
-    client.print("Update interval = ");
-    client.print(update);
-    client.println(" second</p>");
-    client.println("<hr>");
-    client.print("<p>http://");
-    client.print(ipAddress);
+    //POST用FORM
     client.println("<form method=\"POST\" action=\"http://" + ipAddress + "/\">");
-    
-    client.println("<p>ユーザID：<br>");
-    client.println("<input type=\"text\" name=\"userid\"></p>");
+    client.println("<p>Email：<br>");
+    client.println("<input type=\"text\" name=\"email\"></p>");
     client.println("<p>SSID：<br>");
     client.println("<input type=\"text\" name=\"ssid\"></p>");
     client.println("<p>PASSWORD：<br>");
     client.println("<input type=\"text\" name=\"password\"></p>");
     client.println("<button type=\"submit\">設定</button>");
-    // client.println("automatic update:<input type=\"submit\" name=\"INT\" value=\"0 Stop\">");
-    // client.println("<input type=\"submit\" name=\"INT\" value=\"1 second\">");
-
     client.println("</form>");
+    
     client.println("</body>");
     return 0;
 }

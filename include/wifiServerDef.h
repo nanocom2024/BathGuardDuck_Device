@@ -7,7 +7,7 @@ const char LOCAL_WIFI_SSID[] = "Leafony_ESP32-AP";
 const char LOCAL_WIFI_PASSWORD[] = "password";
 
 //設定用変数
-String savedUserid = "";
+String savedEmail = "";
 String savedSsid = "";
 String savedPassword = "";
 
@@ -37,9 +37,9 @@ void wifiSetUp() {
     Serial.println("Connected to WiFi");
 }
 
-//userIDを取得する関数
-String getUserid() {
-    return savedUserid;
+//emailを取得する関数
+String getEmail() {
+    return savedEmail;
 }
 
 //サーバを立ち上げる関数
@@ -80,7 +80,7 @@ bool runningServer() {
 
                         //POSTがあるかチェック
                         Serial.println("nu: " + currentLine);
-                        ret = currentLine.indexOf("POST"); //userid=nu&ssid=nu&password=nu
+                        ret = currentLine.indexOf("POST"); //email=nu&ssid=nu&password=nu
                         if (ret > -1) {
                             Serial.println("POST request");
                             //bodyのデータを読み込む
@@ -90,10 +90,10 @@ bool runningServer() {
                                 allBody += String(byteData);
                             }
 
-                            //allBodyからuserid、ssid、passwordを取り出す
-                            int index = allBody.indexOf("userid=");
+                            //allBodyからemail、ssid、passwordを取り出す
+                            int index = allBody.indexOf("email=");
                             if (index > -1) {
-                                savedUserid = allBody.substring(index + 7, allBody.indexOf("&", index));
+                                savedEmail = allBody.substring(index + 6, allBody.indexOf("&", index));
                             }
                             index = allBody.indexOf("ssid=");
                             if (index > -1) {
@@ -106,7 +106,7 @@ bool runningServer() {
                             }
 
                             //設定完了
-                            Serial.println("userid: " + savedUserid);
+                            Serial.println("email: " + savedEmail);
                             Serial.println("ssid: " + savedSsid);
                             Serial.println("password: " + savedPassword);
                             isSetup = true;
@@ -132,7 +132,7 @@ bool runningServer() {
 }
 
 //POSTする関数
-void sendNotification() { //String message
+void sendNotification(String duckNotifState) {
     WiFiClientSecure client;
     client.setInsecure(); //証明書無視??????????
     if (!client.connect(server, 443)) {
@@ -141,8 +141,10 @@ void sendNotification() { //String message
     }
 
     //POSTするjsonデータ
-    String data = "{\"state\":\"ENTER_WATER\", \"token\":\">>>SET TOKEN HERE<<<\", \"email\":\"" + savedUserid + "\"}"; 
-    client.println("POST /api/v1/send-notification HTTP/1.1"); //HTTPリクエスト
+    String stateStr = "\"state\":\"" + duckNotifState + "\"";
+    String emailStr = "\"email\":\"" + savedEmail + "\"";
+    String data = "{" + stateStr + ", " + emailStr + "}";
+    client.println("POST /api/v2/send-notification HTTP/1.1"); //HTTPリクエスト
     client.println("Host: " + String(server)); //Hostの設定
     client.println("Content-Type: application/json"); // JSON形式のContent-Type
     client.print("Content-Length: ");
@@ -152,3 +154,5 @@ void sendNotification() { //String message
 
     Serial.println("Notification sent: " + data);
 }
+
+// String data = "{\"state\":\"ENTER_WATER\", \"token\":\">>>SET TOKEN HERE<<<\", \"email\":\"" + savedEmail + "\"}"; 
