@@ -72,6 +72,33 @@ double getAccelStd(Accel avgAccel) {
     return sqrt(var);
 }
 
+double getAccelStdZ(Accel avgAccel) {
+    double var = 0;
+    for (Accel accel : recentAccelList) {
+        var += pow(accel.z - avgAccel.z, 2);
+    }
+    var /= recentAccelList.size();
+    return sqrt(var);
+}
+
+double getAccelStdX(Accel avgAccel) {
+    double var = 0;
+    for (Accel accel : recentAccelList) {
+        var += pow(accel.x - avgAccel.x, 2);
+    }
+    var /= recentAccelList.size();
+    return sqrt(var);
+}
+
+double getAccelStdY(Accel avgAccel) {
+    double var = 0;
+    for (Accel accel : recentAccelList) {
+        var += pow(accel.y - avgAccel.y, 2);
+    }
+    var /= recentAccelList.size();
+    return sqrt(var);
+}
+
 //加速度リストをクリアする関数
 void clearAccelList() {
     recentAccelList.clear();
