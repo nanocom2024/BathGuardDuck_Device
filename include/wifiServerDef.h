@@ -11,6 +11,11 @@ String savedEmail = "";
 String savedSsid = "";
 String savedPassword = "";
 
+///////////////////////////////////////
+const char* labSsid = "04F-Pluslab";
+const char* labPassword = "bearspooh";
+const String email = "kkk%40kkk.kkk";
+///////////////////////////////////////
 //プロトタイプ宣言
 // void sendLineNotify(String message);
 // void sendNotification();
@@ -26,9 +31,14 @@ void localServerSetUp() {
     Serial.println("Server started");
 }
 
+//ローカルサーバを終了する関数
+void localServerEnd() {
+    localServer.end();
+}
+
 void wifiSetUp() {
     // WiFiの設定
-    WiFi.begin(savedSsid, savedPassword);
+    WiFi.begin(labSsid, labPassword);
     Serial.print("Connecting to WiFi...");
     while (WiFi.status() != WL_CONNECTED) {
         delay(1000);
@@ -142,7 +152,7 @@ void sendNotification(String duckNotifState) {
 
     //POSTするjsonデータ
     String stateStr = "\"state\":\"" + duckNotifState + "\"";
-    String emailStr = "\"email\":\"" + savedEmail + "\"";
+    String emailStr = "\"email\":\"" + email + "\"";
     String data = "{" + stateStr + ", " + emailStr + "}";
     client.println("POST /api/v2/send-notification HTTP/1.1"); //HTTPリクエスト
     client.println("Host: " + String(server)); //Hostの設定

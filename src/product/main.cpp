@@ -59,6 +59,7 @@ void loop() {
     if (!isConnectedToWifi) {
         wifiSetUp();
         isConnectedToWifi = true;
+        localServerEnd();
     }
 
     /* 加速度センサの処理 */
@@ -111,12 +112,12 @@ void loop() {
                 // Serial.println("溺れている");
                 isWave = false; // リセット
                 delay(30000); //30秒間表示
+                //TODO: 溺れている状態から水上に戻らないバグを修正する
             }
         }
     } else {
-    isAbove = false;
+        isAbove = false;
     }
-
     //遅延
     delay(20);
 }
