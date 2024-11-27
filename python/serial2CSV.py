@@ -5,7 +5,7 @@ import csv
 ser = serial.Serial('/dev/cu.ESP32_Test', 9600)
 
 # CSVファイルを開く
-with open('/Users/k22089kk/githum/BathGuardDuck/python/ToSearchShockWave.csv', 'w', newline='') as f:
+with open('./python/csv/serialData.csv', 'w', newline='') as f:
     writer = csv.writer(f)
 
     # 継続してシリアルから読み取る
