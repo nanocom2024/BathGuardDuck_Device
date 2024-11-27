@@ -24,11 +24,11 @@ void accelSetUp() {
 
 //加速度を表示する関数
 void printAccel(Accel accel) {
-    Serial.print("X: " + String(accel.x));
+    Serial.print(accel.x);
     Serial.print(", ");
-    Serial.print("Y: " + String(accel.y));
+    Serial.print(accel.y);
     Serial.print(", ");
-    Serial.print("Z: " + String(accel.z));
+    Serial.print(accel.z);
     Serial.println("");
 }
 
