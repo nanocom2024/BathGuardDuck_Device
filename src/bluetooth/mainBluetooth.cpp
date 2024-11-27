@@ -43,24 +43,24 @@ void loop()
     // 現在の加速度を取得
     Accel nowAccel = getNowAccel();
     // printAccel(nowAccel);
-    printAccelBT(nowAccel);
+    // printAccelBT(nowAccel);
 
-    //   //直近の加速度をリストに追加
-    //   addAccelToList(nowAccel);
+      //直近の加速度をリストに追加
+      addAccelToList(nowAccel);
 
-    //   //加速度リスト中の平均値を計算
-    //   Accel avgAccel = getAvgAccel();
+      //加速度リスト中の平均値を計算
+      Accel avgAccel = getAvgAccel();
 
-    //   //分散と標準偏差計算
-    //   double std = getAccelStd(avgAccel);
-    //   double stdX = getAccelStdX(avgAccel);
-    //   double stdY = getAccelStdY(avgAccel);
-    //   double stdZ = getAccelStdZ(avgAccel);
+      //分散と標準偏差計算
+      double std = getAccelStd(avgAccel);
+      double stdX = getAccelStdX(avgAccel);
+      double stdY = getAccelStdY(avgAccel);
+      double stdZ = getAccelStdZ(avgAccel);
 
-    //   //Bluetoothで送信
-    //   SerialBT.print(nowAccel.z);
-    //   SerialBT.print(',');
-    //   SerialBT.println(std);
+      //Bluetoothで送信
+      SerialBT.print(nowAccel.z);
+      SerialBT.print(',');
+      SerialBT.println(std);
 
     //     // 陸上に設置されているかどうかの判定
     //     if (nowAccel.z < angle) {

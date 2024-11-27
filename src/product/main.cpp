@@ -102,7 +102,7 @@ void loop() {
         // 閾値を超え続けて30秒が経過したら「水上に浮いている」と判定
             changeDuckState(ON_WATER);
             // Serial.println("水上に浮いている");
-            if (std > 1000) {
+            if (std > 600) {
                 startTimeWave = millis();
                 isWave = true;
             } else if (millis() - startTimeWave >= 9000 && isWave) {
