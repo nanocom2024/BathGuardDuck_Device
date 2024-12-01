@@ -1,4 +1,5 @@
 # BathGuardDuck_Device
+<img width="700" alt="スクリーンショット 2024-12-01 14 03 18" src="https://github.com/user-attachments/assets/2d4738ad-85ba-4f6d-9172-5e3f83cc8abb">
 
 ## 概要
 
