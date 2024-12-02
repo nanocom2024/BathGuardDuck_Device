@@ -6,7 +6,9 @@
 浴槽での幼児の溺水事故を防止するためのシステムである「おふろみまもりだっく」の、ラバーダックに内蔵するLeafony用のプログラム。
 本プログラムを書き込んだLeafonyをラバーダックに内蔵し浴槽に浮かべると見守りを開始し、幼児の入水を検知するとWebサーバを経由して端末に通知を行う。
 
-作品についての詳細は[こちら](https://hackmd.io/@mukpan/H1-DIYvC0)
+- 作品についての詳細は[こちら](https://hackmd.io/@mukpan/H1-DIYvC0)
+- bath-guard-duck-webの[リポジトリ](https://github.com/nanocom2024/bath_guard_duck_web)
+
 
 ## 状態遷移の条件
 
